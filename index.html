@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <title> RescueMark Official Website</title>
+        <link rel="stylesheet" href="style-darkgold.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <section class="header">
+        <nav>
+            <a href="index.html"><img src="images/goldlogo.png"></a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li class="active"><a href="index.html">HOME</a></li>
+                    <!-- <li><a href="aboutRM.html">ABOUT</a></li> -->
+                    <li><a href="about the app.html">THE APP</a></li>
+                    <!-- <li><a href="team page.html">MEET THE TEAM</a></li> -->
+                    <li><a href="blogRM.html">BLOG</a></li>
+                    <li><a href="contactRM.html">CONTACT</a></li>
+                    <li><a href="donateRM.html">DONATE</a></li>
+                    <li><a href="FAQs.html">FAQS</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+    <div id="progressBar"></div>
+    <div class="text-box">
+        <h1>No Waste, Just Taste.</h1>
+        <p> Get quality food at reduced prices while helping local businesses<br> cut down on waste and make the most of every bite.</p>
+        <a href="about the app.html" class="hero-btn">Check out the App</a>
+    </div>
+    </section>
+<!-- ------------------ newsletter pop-up -------------- -->
+<div id="newsletter-popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <button id="close-popup" aria-label="Close newsletter signup popup" style="position:absolute; top:10px; right:15px; font-size:1.5rem; background:none; border:none; cursor:pointer;">×</button>
+  <h2 id="popup-title">Sign up for our Newsletter!</h2>
+  
+  <form id="newsletter-form" novalidate>
+    <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
+    <input type="email" name="email" placeholder="Your email" autocomplete="email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+  
+  <p id="form-message">Thanks for subscribing! 🙌</p>
+</div>
+
+<!-- ----------------- reset button temp ------------- -->
+<!-- <button id="reset-subscription" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; font-size: 14px; z-index: 10000;">Reset Signup</button> -->
+ <!-- ----------download the app ----------- -->
+<section>
+    <div class="download-buttons">
+                <h2>Get the App</h2>
+                <p>Start rescuing food and saving today — download RescueMark now.</p>
+                    <div class="button-group">
+                        <a href="#" class="download-btn ios"><i class="fa-brands fa-apple"></i> iOS App</a>
+                        <a href="#" class="download-btn android"><i class="fa-brands fa-google-play"></i> Android App</a>
+                    </div>
+            </div>
+</section>
+<!-- ------Who are we------ -->
+
+<section class="about">
+    <h1>Rescue Mark at a glance</h1>
+    <p>We are a South African Based company focused on reducing food waste.</p>
+
+    <div class="row">
+        <div class="about-col">
+            <h3>Values</h3>
+            <p> We are committed to reducing food waste and hunger by connecting individuals and businesses with excess 
+                food to those in need. Rooted in compassion and sustainability, our mission is to create a community-driven 
+                platform that ensures good food never goes to waste.</p>
+        </div>
+        <div class="about-col">
+            <h3>How we Started</h3>
+            <p>RescueMark began as a shared vision—a simple idea among passionate individuals who wanted to tackle food waste
+                 and hunger in South Africa. While we're still shaping and refining the concept, 
+                 our tech team has already started building the app that will bring this vision to life.</p>
+        </div>
+        <div class="about-col">
+            <h3>What We Do</h3>
+            <p>RescueMark is a platform designed to reduce food waste by connecting businesses and individuals with 
+                surplus food to local communities in need. We make it easy to share excess food safely and efficiently, 
+                ensuring it reaches people who can benefit from it.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ------- offerigs ------- -->
+<section class="offerings">
+    <h1>Save More, Support Local</h1>
+    <p>Save on meals and support local businesses.</p>
+
+    <div class="row">
+        <div class="offerings-col">
+            <img src="images/fruitbasket.jpg">
+            <div class="layer">
+                <h3>Affordable</h3>
+            </div>        
+        </div>
+        <div class="offerings-col">
+            <img src="images/foodbowl3.jpg">
+            <div class="layer">
+                <h3>Sustainable Eating</h3>
+            </div>
+        </div>
+        <div class="offerings-col">
+            <img src="images/local2.jpg">
+            <div class="layer">
+                <h3>Support Local</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ------ How RescueMark Helps you ------- -->
+<section class="help">
+    <h1> How RescueMark Helps You</h1>
+    <p>Rescue food, save money, and support local — all in a few simple steps.</p>
+
+    <div class="row">
+        <div class="help-col">
+            <img src="images/budget2.jpg">
+            <h3>Save.</h3>
+            <p>Find food items at discounted prices and make your money go further with every purchase.</p>
+        </div>
+        <div class="help-col">
+            <img src="images/fooddonate1.jpg">
+            <h3>Support.</h3>
+            <p>Support local businesses by giving their surplus food a second chance and strengthening your community.</p>
+        </div>
+        <div class="help-col">
+            <img src="images/food3.jpg">
+            <h3>Enjoy.</h3>
+            <p>Enjoy great savings and discover hidden deals on everyday food and essentials.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ------ reviews --------- -->
+ <section class="reviews">
+    <h1>What our Customers Say</h1>
+    <p>Feedback based on what our customers have experinced through using our app.</p>
+
+    <div class="row">
+        <div class="reviews-col">
+            <img src="images/lady.jpg">
+            <div>
+                <p>Such a brilliant idea! I’ve saved so much money by buying food that would’ve gone to waste. 
+                Plus, I love knowing I'm supporting local businesses at the same time. RescueMark makes it easy and affordable!</p>
+                <h3>Lerato M</h3>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+        </div>
+        <div class="reviews-col">
+            <img src="images/man.jpg">
+            <div>
+                <p>RescueMark is a game-changer! I’ve found amazing deals on food I actually use every day. 
+                    The app is super easy to navigate, and it feels good knowing I’m making a difference.</p>
+                <h3>Chris P</h3>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+            </div>
+        </div>
+    </div>
+ </section>
+ 
+ <!-- ------- Call to Action ----------  -->
+
+ <section class="cta">
+    <h1>Get in touch with us.</h1>
+    <a href="contactRM.html" class="hero-btn">CONTACT US</a>
+ </section>
+
+ <!-- ------- Footer ------- -->
+  <section class="footer">
+    <h4>About Us</h4>
+    <p>RescueMark is a Gauteng-based platform helping reduce food waste by connecting people with affordable, surplus food. 
+        <br>We support local businesses while making everyday essentials more accessible.
+        <br>Together, we’re building a more sustainable and food-secure future.</p>
+        <div class="icons">
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-tiktok"></i>
+            <i class="fa-brands fa-linkedin-in"></i>
+            <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <p>Made with <i class="fa-regular fa-heart"></i> by Analytic Aces</p>
+  </section>
+
+<!-- Back to Top Button -->
+<button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- -----JavaScript ------ -->
+<script src="/script.js"></script>
+
+<script src="https://cdn.botpress.cloud/webchat/v3.2/inject.js" defer></script>
+<script src="https://files.bpcontent.cloud/2025/07/29/13/20250729133757-HL6WZY3E.js" defer></script>
+
+</body>
+</html>
