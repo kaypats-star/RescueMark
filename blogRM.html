@@ -122,108 +122,120 @@
 </button>
 
 <!-- -----JavaScript ------ -->
-<script src="/script.js">
+<script src="/script.js"></script>
 
+<script>
+// Blog Comments System - Updated for Netlify
+document.addEventListener('DOMContentLoaded', function() {
     const commentForm = document.querySelector('.comment-form');
-const commentsDisplay = document.querySelector('.comments-display');
-
-const modal = document.getElementById('confirm-modal');
-const confirmYes = document.getElementById('confirm-yes');
-const confirmNo = document.getElementById('confirm-no');
-
-let commentToDelete = null;
-
-// Assign a unique user ID for this browser
-if(!localStorage.getItem('userId')){
-    localStorage.setItem('userId', Date.now() + '-' + Math.floor(Math.random()*100000));
-}
-const userId = localStorage.getItem('userId');
-
-// Load saved comments
-function loadComments() {
-    const saved = JSON.parse(localStorage.getItem('comments') || '[]');
-    saved.forEach(c => {
-        createCommentElement(c.name, c.text, c.time, c.userId, false);
-    });
-}
-
-// Save all comments
-function saveComments() {
-    const comments = [];
-    document.querySelectorAll('.single-comment').forEach(c => {
-        comments.push({
-            name: c.querySelector('h4').innerText,
-            text: c.querySelector('p').innerText,
-            time: c.querySelector('small').innerText,
-            userId: c.dataset.userId
+    const commentsDisplay = document.querySelector('.comments-display');
+    
+    if (!commentForm || !commentsDisplay) return;
+    
+    const modal = document.getElementById('confirm-modal');
+    const confirmYes = document.getElementById('confirm-yes');
+    const confirmNo = document.getElementById('confirm-no');
+    
+    let commentToDelete = null;
+    
+    // Assign a unique user ID for this browser
+    if(!localStorage.getItem('userId')){
+        localStorage.setItem('userId', Date.now() + '-' + Math.floor(Math.random()*100000));
+    }
+    const userId = localStorage.getItem('userId');
+    
+    // Load saved comments
+    function loadComments() {
+        const saved = JSON.parse(localStorage.getItem('comments') || '[]');
+        commentsDisplay.innerHTML = ''; // Clear existing
+        saved.forEach(c => {
+            createCommentElement(c.name, c.text, c.time, c.userId, false);
         });
-    });
-    localStorage.setItem('comments', JSON.stringify(comments));
-}
-
-// Create comment element
-function createCommentElement(name, text, time, ownerId, save=true) {
-    const commentEl = document.createElement('div');
-    commentEl.classList.add('single-comment');
-    commentEl.dataset.userId = ownerId;
-    commentEl.innerHTML = `
-        <h4>${name}</h4>
-        <p>${text}</p>
-        <small>${time}</small>
-        <button class="delete-comment">Delete</button>
-    `;
-    commentsDisplay.prepend(commentEl);
-
-    // Add delete functionality
-    const deleteBtn = commentEl.querySelector('.delete-comment');
-    deleteBtn.addEventListener('click', () => {
-        if(commentEl.dataset.userId !== userId){
-            alert("You can only delete your own comments!");
+    }
+    
+    // Save all comments
+    function saveComments() {
+        const comments = [];
+        document.querySelectorAll('.single-comment').forEach(c => {
+            comments.push({
+                name: c.querySelector('h4').innerText,
+                text: c.querySelector('p').innerText,
+                time: c.querySelector('small').innerText,
+                userId: c.dataset.userId
+            });
+        });
+        localStorage.setItem('comments', JSON.stringify(comments));
+    }
+    
+    // Create comment element
+    function createCommentElement(name, text, time, ownerId, save=true) {
+        const commentEl = document.createElement('div');
+        commentEl.classList.add('single-comment');
+        commentEl.dataset.userId = ownerId;
+        commentEl.innerHTML = `
+            <h4>${name}</h4>
+            <p>${text}</p>
+            <small>${time}</small>
+            ${ownerId === userId ? '<button class="delete-comment">Delete</button>' : ''}
+        `;
+        commentsDisplay.prepend(commentEl);
+    
+        // Add delete functionality only for user's own comments
+        const deleteBtn = commentEl.querySelector('.delete-comment');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                commentToDelete = commentEl;
+                modal.style.display = 'flex';
+            });
+        }
+    
+        if(save) saveComments();
+    }
+    
+    // Handle form submission
+    commentForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = commentForm.commentName.value.trim();
+        const email = commentForm.commentEmail.value.trim();
+        const text = commentForm.commentText.value.trim();
+        
+        if(!name || !email || !text){
+            alert("Please fill all fields.");
             return;
         }
-        commentToDelete = commentEl;
-        modal.style.display = 'flex';
+        
+        createCommentElement(name, text, new Date().toLocaleString(), userId);
+        commentForm.reset();
     });
-
-    if(save) saveComments();
-}
-
-// Handle form submission
-commentForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = commentForm.commentName.value.trim();
-    const text = commentForm.commentText.value.trim();
-    if(!name || !text){
-        alert("Please fill all fields.");
-        return;
+    
+    // Modal buttons
+    if (confirmYes && confirmNo) {
+        confirmYes.addEventListener('click', () => {
+            if(commentToDelete) commentToDelete.remove();
+            saveComments();
+            modal.style.display = 'none';
+            commentToDelete = null;
+        });
+    
+        confirmNo.addEventListener('click', () => {
+            modal.style.display = 'none';
+            commentToDelete = null;
+        });
     }
-    createCommentElement(name, text, new Date().toLocaleString(), userId);
-    commentForm.reset();
-});
-
-// Modal buttons
-confirmYes.addEventListener('click', () => {
-    if(commentToDelete) commentToDelete.remove();
-    saveComments();
-    modal.style.display = 'none';
-    commentToDelete = null;
-});
-
-confirmNo.addEventListener('click', () => {
-    modal.style.display = 'none';
-    commentToDelete = null;
-});
-
-// Close modal if clicking outside
-window.addEventListener('click', e => {
-    if(e.target === modal){
-        modal.style.display = 'none';
-        commentToDelete = null;
+    
+    // Close modal if clicking outside
+    if (modal) {
+        window.addEventListener('click', e => {
+            if(e.target === modal){
+                modal.style.display = 'none';
+                commentToDelete = null;
+            }
+        });
     }
+    
+    // Load comments on page load
+    loadComments();
 });
-
-// Load comments on page load
-loadComments();
 </script>
 
 <script src="https://cdn.botpress.cloud/webchat/v3.2/inject.js" defer></script>
