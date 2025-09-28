@@ -628,39 +628,41 @@ h3{
 .comments-display {
     margin-top: 20px;
 }
-/* Force Blog Layout Fix */
+/* Fix Blog Layout - Force Side by Side */
 .blog .row {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 30px !important;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
 }
 
 .blog-left {
-    flex: 1 !important;
-    width: 65% !important;
-    min-width: 0 !important;
+    flex: 1;
+    min-width: 0; /* Crucial for flex item sizing */
 }
 
 .blog-right {
-    flex: 0 0 300px !important;
-    width: 32% !important;
-    position: sticky !important;
-    top: 20px !important;
+    flex: 0 0 300px; /* Fixed width, won't shrink */
 }
 
-/* Mobile override */
+/* Ensure images don't break the layout */
+.blog-left img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Mobile stacking */
 @media (max-width: 768px) {
     .blog .row {
-        flex-direction: column !important;
+        flex-direction: column;
     }
     
-    .blog-left,
     .blog-right {
-        width: 100% !important;
-        flex: none !important;
+        flex: none;
+        width: 100%;
+        margin-top: 30px;
     }
 }
-
 .single-comment {
     background: #fff8e1; /* light gold */
     padding: 12px 15px;
