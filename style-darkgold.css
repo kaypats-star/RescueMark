@@ -628,6 +628,31 @@ h3{
 .comments-display {
     margin-top: 20px;
 }
+/* Fix Blog Layout - Desktop */
+@media (min-width: 768px) {
+    .blog .row {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 30px;
+        align-items: flex-start;
+    }
+    
+    .blog-left {
+        flex: 1;
+        min-width: 0; /* Prevents overflow */
+    }
+    
+    .blog-right {
+        flex: 0 0 300px; /* Fixed width for categories */
+        position: sticky;
+        top: 20px; /* Sticks to top when scrolling */
+    }
+    
+    .blog-left img {
+        max-width: 100%;
+        height: auto;
+    }
+}
 
 .single-comment {
     background: #fff8e1; /* light gold */
