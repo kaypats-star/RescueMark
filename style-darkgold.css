@@ -628,39 +628,26 @@ h3{
 .comments-display {
     margin-top: 20px;
 }
-/* Fix Blog Layout - Force Side by Side */
+/* Classic Float Layout */
 .blog .row {
-    display: flex;
-    gap: 30px;
-    align-items: flex-start;
+    overflow: hidden; /* Clearfix */
 }
 
 .blog-left {
-    flex: 1;
-    min-width: 0; /* Crucial for flex item sizing */
+    width: 65%;
+    float: left;
 }
 
 .blog-right {
-    flex: 0 0 300px; /* Fixed width, won't shrink */
+    width: 32%;
+    float: right;
 }
 
-/* Ensure images don't break the layout */
-.blog-left img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Mobile stacking */
 @media (max-width: 768px) {
-    .blog .row {
-        flex-direction: column;
-    }
-    
+    .blog-left,
     .blog-right {
-        flex: none;
         width: 100%;
-        margin-top: 30px;
+        float: none;
     }
 }
 .single-comment {
