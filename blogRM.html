@@ -183,7 +183,7 @@
           
           const commentEl = document.createElement('div');
           commentEl.className = 'single-comment';
-          commentEl.id = 'comment-' + doc.id; // Add ID for direct linking
+          commentEl.id = 'comment-' + doc.id;
           commentEl.innerHTML = `
             <h4>${escapeHtml(comment.name)}</h4>
             <p>${escapeHtml(comment.text)}</p>
@@ -202,7 +202,6 @@
           }
         });
         
-        // Scroll to comment if URL has anchor
         scrollToComment();
       }, (error) => {
         console.error('Error loading comments:', error);
@@ -210,7 +209,6 @@
       });
     };
 
-    // Smooth scroll to comment when URL has anchor
     function scrollToComment() {
       const hash = window.location.hash;
       if (hash && hash.startsWith('#comment-')) {
@@ -228,7 +226,7 @@
       }
     }
 
-    // Submit comment with email notification
+    // UPDATED: Submit comment with email notification
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -260,12 +258,19 @@
         const commentId = docRef.id;
         const commentLink = `${window.location.origin}${window.location.pathname}#comment-${commentId}`;
         
-        console.log('Comment posted with ID:', commentId);
-        console.log('Comment link:', commentLink);
+        console.log('📝 Comment posted with ID:', commentId);
+        console.log('🔗 Comment link:', commentLink);
         
-        // Send email notification
+        // UPDATED: Send email notification with DEBUGGING
+        console.log('📧 Attempting to send email...');
+        console.log('EmailJS Config:', {
+          serviceId: 'service_qn9px3t',
+          templateId: 'template_zvz8l5j',
+          publicKey: 'QPhdOZQufzjykyAq8'
+        });
+        
         try {
-          await emailjs.send('service_qn9px3t', 'template_zvz8l5j', {
+          const emailResult = await emailjs.send('service_qn9px3t', 'template_zvz8l5j', {
             to_name: name,
             to_email: email,
             comment_text: text,
@@ -274,18 +279,22 @@
             post_title: 'Quick, Tasty & Waste-Free Meals'
           });
           
-          console.log('Email sent successfully');
+          console.log('✅ Email sent successfully!', emailResult);
+          console.log('Status:', emailResult.status);
+          console.log('Text:', emailResult.text);
           
         } catch (emailError) {
-          console.warn('Email failed to send, but comment was posted:', emailError);
-          // Don't alert user about email failure - comment still worked
+          console.error('❌ EmailJS Error:', emailError);
+          console.log('Error status:', emailError.status);
+          console.log('Error text:', emailError.text);
+          // Don't show alert for email failure - comment still posted
         }
         
         commentForm.reset();
         alert('✅ Comment posted successfully! Check your email for a confirmation with your comment link.');
         
       } catch (error) {
-        console.error('Error posting comment:', error);
+        console.error('❌ Error posting comment:', error);
         alert('❌ Error posting comment: ' + error.message);
       } finally {
         submitBtn.disabled = false;
@@ -298,7 +307,7 @@
       if (commentToDelete) {
         try {
           await deleteDoc(doc(db, "comments", commentToDelete));
-          console.log('Comment deleted');
+          console.log('🗑️ Comment deleted');
           modal.style.display = 'none';
           commentToDelete = null;
           alert('Comment deleted successfully!');
