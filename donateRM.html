@@ -32,24 +32,76 @@
     </section>
 <!-- -----Donate page-------- -->
 <section class="donate-section">
-        <h1>Helping Hands, Full Plates</h1>
-        <p>Every day, tons of edible food is discarded while thousands go hungry. At RescueMark, we not only connect surplus food to budget-conscious buyers — we also partner with local NGOs and charity organizations to deliver food to those who need it most.</p>
-
-        <div class="donate-gallery">
-            <img src="images/ngo1.jpg" alt="Volunteers sorting food">
-            <img src="images/ngo4.jpg" alt="Community members receiving meals">
-            <img src="images/ngo3.jpg" alt="Children enjoying donated meals">
+<section class="initiatives-section">
+    <h1>Our Impact Initiatives</h1>
+    <p class="subtitle">Discover how RescueMark is tackling food waste and hunger through our key programs. Click on each initiative to learn more.</p>
+    
+    <div class="initiatives-grid">
+        <!-- Initiative 1 -->
+        <div class="initiative-box" onclick="openInitiative(1)">
+            <img src="images/ngo1.jpg" alt="Food Rescue" class="initiative-image">
+            <div class="initiative-overlay">
+                <h3 class="initiative-title">Food Rescue Program</h3>
+                <p class="initiative-preview">Redirecting surplus food from retailers to those in need</p>
+                <p class="click-hint">Tap to read more</p>
+            </div>
         </div>
-
-        <p>What most consider "waste" can become someone's next meal. This batch of near-expiry but perfectly edible items was rescued 
-            from local supermarkets and redirected to a Johannesburg shelter. In just one afternoon, volunteers sorted and delivered 
-            over 200 food parcels — saving lives and reducing landfill waste in one act of kindness.<br><br>
-            Through our partnership with local NGOs, these recovered food donations reached communities hit hardest by food insecurity.
-             Many of the recipients shared how they'd gone days without a proper meal. What would’ve been discarded ended up on dinner plates
-              — a powerful reminder that good food should never go to waste.<br><br>
-            We rarely think about the value of food that’s close to expiry — but to these children, it meant lunchboxes full of nourishment. 
-            Our network ensures that rescued food meets safety standards and reaches the most vulnerable in time. Smiles like these are what 
-            your donations make possible.</p>
+        
+        <!-- Initiative 2 -->
+        <div class="initiative-box" onclick="openInitiative(2)">
+            <img src="images/ngo4.jpg" alt="Community Outreach" class="initiative-image">
+            <div class="initiative-overlay">
+                <h3 class="initiative-title">Community Outreach</h3>
+                <p class="initiative-preview">Partnering with local NGOs to reach vulnerable communities</p>
+                <p class="click-hint">Tap to read more</p>
+            </div>
+        </div>
+        
+        <!-- Initiative 3 -->
+        <div class="initiative-box" onclick="openInitiative(3)">
+            <img src="images/ngoeducation.jpg" alt="Education & Awareness" class="initiative-image">
+            <div class="initiative-overlay">
+                <h3 class="initiative-title">Education & Awareness</h3>
+                <p class="initiative-preview">Teaching communities about food waste and sustainability</p>
+                <p class="click-hint">Tap to read more</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Expanded content for each initiative -->
+    <div class="initiative-expanded" id="expanded-1">
+        <div class="expanded-content">
+            <button class="close-btn" onclick="closeInitiative(1)">&times;</button>
+            <img src="images/ngo1.jpg" alt="Food Rescue" class="expanded-image">
+            <div class="expanded-details">
+                <h2 class="expanded-title">Food Rescue Program</h2>
+                <p class="expanded-text">Our Food Rescue Program works directly with supermarkets and restaurants to redirect perfectly edible food approaching expiration dates. We collect these items and distribute them to shelters and families in need, reducing waste while fighting hunger.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="initiative-expanded" id="expanded-2">
+        <div class="expanded-content">
+            <button class="close-btn" onclick="closeInitiative(2)">&times;</button>
+            <img src="images/ngo4.jpg" alt="Community Outreach" class="expanded-image">
+            <div class="expanded-details">
+                <h2 class="expanded-title">Community Outreach</h2>
+                <p class="expanded-text">We partner with local NGOs and community organizations to ensure rescued food reaches the most vulnerable populations. Through these collaborations, we've established regular distribution points in underserved neighborhoods across Johannesburg.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="initiative-expanded" id="expanded-3">
+        <div class="expanded-content">
+            <button class="close-btn" onclick="closeInitiative(3)">&times;</button>
+            <img src="images/ngoeducation.jpg" alt="Education & Awareness" class="expanded-image">
+            <div class="expanded-details">
+                <h2 class="expanded-title">Education & Awareness</h2>
+                <p class="expanded-text">Our education programs teach communities about food waste reduction, proper storage, and creative cooking with leftovers. We believe education is key to creating long-term solutions for both food waste and hunger.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
         <a href="https://paystack.shop/pay/8pqdod1u91" class="donate-btn">Donate Now</a>
 

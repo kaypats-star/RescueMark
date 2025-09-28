@@ -342,3 +342,84 @@ if (document.readyState === 'loading') {
         };
     }
 }
+//----------------donate page initiatives-------------------
+// Simple initiative functions - guaranteed to work
+function openInitiative(id) {
+    console.log('Opening initiative:', id);
+    // Hide all initiatives first
+    document.querySelectorAll('.initiative-expanded').forEach(el => {
+        el.classList.remove('active');
+    });
+    // Show the selected one
+    const expanded = document.getElementById('expanded-' + id);
+    if (expanded) {
+        expanded.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeInitiative(id) {
+    console.log('Closing initiative:', id);
+    const expanded = document.getElementById('expanded-' + id);
+    if (expanded) {
+        expanded.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Close when clicking outside content
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('initiative-expanded')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Close with escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.initiative-expanded').forEach(el => {
+            el.classList.remove('active');
+        });
+        document.body.style.overflow = '';
+    }
+});
+
+// Also add click events to read more buttons
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.read-more').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const initiativeBox = this.closest('.initiative-box');
+            if (initiativeBox && initiativeBox.onclick) {
+                initiativeBox.onclick();
+            }
+        });
+    });
+});
+
+// Contact Us button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const contactBtn = document.querySelector('.big-donate-btn');
+    
+    if (contactBtn) {
+        contactBtn.addEventListener('click', function(e) {
+            // For desktop, ensure mail client opens
+            const email = 'kryspats@gmail.com';
+            const subject = 'Large Donation Inquiry';
+            const body = 'Hello RescueMark team,\n\nI\'m interested in making a larger contribution and would like to discuss partnership opportunities.';
+            
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Try to open mail client
+            window.location.href = mailtoLink;
+            
+            // Fallback - show email address
+            setTimeout(function() {
+                if (!document.hidden) {
+                    alert('Please email us at: ' + email);
+                }
+            }, 1000);
+        });
+    }
+});

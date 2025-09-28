@@ -35,6 +35,8 @@
         <div class="row">
             <div class="blog-left">
                 <img src="images/foodbowl1.jpg" alt="Food Bowl">
+                <p><small>Posted on August 25, 2025</small></p>
+
                 <h2>Recipes Using Near-Expiry Ingredients</h2>
                 <p>Just because something is close to its expiry date doesn’t mean it can’t be turned into something delicious! 
                     In fact, near-expiry ingredients are perfect for quick meals that save you money and reduce food waste — 
@@ -61,45 +63,65 @@
                     near-expiry food can become your next favourite meal.
                     Got your own food-saving recipe? Share it with us — we’d love to feature it in our next blog post!</p>
 
-<div class="comment-box">
-    <form class="comment-form" id="commentForm">
-        <input type="text" name="commentName" placeholder="Enter Name" required>
-        <input type="email" name="commentEmail" placeholder="Email" required>
-        <textarea name="commentText" rows="5" placeholder="Your Comment" required></textarea>
-        <button type="submit" class="hero-btn green-btn">POST COMMENT</button>
-    </form>
+    <div class="comment-box">
+        <form class="comment-form" id="commentForm">
+            <input type="text" name="commentName" placeholder="Enter Name" required>
+            <input type="email" name="commentEmail" placeholder="Email" required>
+            <textarea name="commentText" rows="5" placeholder="Your Comment" required></textarea>
+            <button type="submit" class="hero-btn green-btn">POST COMMENT</button>
+        </form>
 
-    <div class="comments-display" id="commentsDisplay">
-        <div class="loading-comments">Loading comments...</div>
-    </div>
-</div>
-
-<!-- Simple Modal (add this if not exists) -->
-<div id="confirm-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <p>Are you sure you want to delete this comment?</p>
-        <div class="modal-buttons">
-            <button id="confirm-yes" class="hero-btn green-btn">Yes, Delete</button>
-            <button id="confirm-no" class="hero-btn" style="background:#fff;border:2px solid #D4AF37;color:#b8932e;">Cancel</button>
+        <div class="comments-display" id="commentsDisplay">
+            <div class="loading-comments">Loading comments...</div>
         </div>
     </div>
-</div>
-
-            <div class="blog-right">
-                <h3>Post Categories</h3>
-                <div class="category-buttons">
-                    <a href="#" class="category-btn">Easy Recipes (21)</a>
-                    <a href="#" class="category-btn">Budget Tips (15)</a>
-                    <a href="#" class="category-btn">Food Facts (23)</a>
-                    <a href="#" class="category-btn">Sustainability (9)</a>
-                    <a href="#" class="category-btn">Community Stories (24)</a>
-                    <a href="#" class="category-btn">Behind the Scenes (13)</a>
-                    <a href="#" class="category-btn">Seasonal Picks (19)</a>
-                    <a href="#" class="category-btn">Smart Shopping (8)</a>
-                </div>
+            </div>
+    <!-- Simple Modal (add this if not exists) -->
+    <div id="confirm-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this comment?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="hero-btn green-btn">Yes, Delete</button>
+                <button id="confirm-no" class="hero-btn" style="background:#fff;border:2px solid #D4AF37;color:#b8932e;">Cancel</button>
             </div>
         </div>
-    </section>
+    </div>
+
+        <div class="blog-right">
+    <h3>Recent Posts</h3>
+    <div class="recent-posts">
+        <a href="blog-easy-recipes.html" class="post-preview">
+            <h4>5-Minute Meals for Busy Weeknights</h4>
+            <p>Quick and delicious recipes when you're short on time...</p>
+            <small>Read More →</small>
+        </a>
+        
+        <a href="blog-budget-tips.html" class="post-preview">
+            <h4>Meal Planning on a Budget</h4>
+            <p>How to stretch your grocery budget while eating well...</p>
+            <small>Read More →</small>
+        </a>
+        
+        <a href="blog-food-facts.html" class="post-preview">
+            <h4>Food Safety Myths Debunked</h4>
+            <p>Separating fact from fiction in food safety...</p>
+            <small>Read More →</small>
+        </a>
+        
+        <a href="blog-sustainability.html" class="post-preview">
+            <h4>Reducing Food Waste at Home</h4>
+            <p>Simple tips to minimize waste and save money...</p>
+            <small>Read More →</small>
+        </a>
+        
+        <a href="blog-cooking-tips.html" class="post-preview">
+            <h4>Essential Kitchen Hacks</h4>
+            <p>Game-changing tips every home cook should know...</p>
+            <small>Read More →</small>
+        </a>
+    </div>
+</div>
+</section>
 <!-- ------- Footer ------- -->
   <section class="footer">
     <h4>About Us</h4>
