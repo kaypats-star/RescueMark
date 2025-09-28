@@ -61,13 +61,18 @@
                     near-expiry food can become your next favourite meal.
                     Got your own food-saving recipe? Share it with us — we’d love to feature it in our next blog post!</p>
 
-                <div class="comment-box">
-                    <form class="comment-form">
-    <input type="text" name="commentName" placeholder="Enter Name" required>
-    <input type="email" name="commentEmail" placeholder="Email" required>
-    <textarea name="commentText" rows="5" placeholder="Your Comment" required></textarea>
-    <button type="submit" class="hero-btn green-btn">POST COMMENT</button>
-</form>
+<div class="comment-box">
+    <form class="comment-form" id="commentForm">
+        <input type="text" name="commentName" placeholder="Enter Name" required>
+        <input type="email" name="commentEmail" placeholder="Email" required>
+        <textarea name="commentText" rows="5" placeholder="Your Comment" required></textarea>
+        <button type="submit" class="hero-btn green-btn">POST COMMENT</button>
+    </form>
+
+    <div class="comments-display" id="commentsDisplay">
+        <div class="loading-comments">Loading comments...</div>
+    </div>
+</div>
 
 <div class="comments-display"></div>
 
@@ -124,118 +129,106 @@
 <!-- -----JavaScript ------ -->
 <script src="/script.js"></script>
 
-<script>
-// Blog Comments System - Updated for Netlify
-document.addEventListener('DOMContentLoaded', function() {
-    const commentForm = document.querySelector('.comment-form');
-    const commentsDisplay = document.querySelector('.comments-display');
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqrzl1t9Ltsg5svDyWaTV7yKnFvHfMM8o",
+    authDomain: "rescuemark-blog-comments.firebaseapp.com",
+    projectId: "rescuemark-blog-comments",
+    storageBucket: "rescuemark-blog-comments.firebasestorage.app",
+    messagingSenderId: "522498051085",
+    appId: "1:522498051085:web:a6b1ec8e76098d130f9944"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Comments system
+  document.addEventListener('DOMContentLoaded', function() {
+    const commentForm = document.getElementById('commentForm');
+    const commentsDisplay = document.getElementById('commentsDisplay');
     
     if (!commentForm || !commentsDisplay) return;
     
-    const modal = document.getElementById('confirm-modal');
-    const confirmYes = document.getElementById('confirm-yes');
-    const confirmNo = document.getElementById('confirm-no');
+    // Load comments in real-time
+    const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
     
-    let commentToDelete = null;
-    
-    // Assign a unique user ID for this browser
-    if(!localStorage.getItem('userId')){
-        localStorage.setItem('userId', Date.now() + '-' + Math.floor(Math.random()*100000));
-    }
-    const userId = localStorage.getItem('userId');
-    
-    // Load saved comments
-    function loadComments() {
-        const saved = JSON.parse(localStorage.getItem('comments') || '[]');
-        commentsDisplay.innerHTML = ''; // Clear existing
-        saved.forEach(c => {
-            createCommentElement(c.name, c.text, c.time, c.userId, false);
-        });
-    }
-    
-    // Save all comments
-    function saveComments() {
-        const comments = [];
-        document.querySelectorAll('.single-comment').forEach(c => {
-            comments.push({
-                name: c.querySelector('h4').innerText,
-                text: c.querySelector('p').innerText,
-                time: c.querySelector('small').innerText,
-                userId: c.dataset.userId
-            });
-        });
-        localStorage.setItem('comments', JSON.stringify(comments));
-    }
-    
-    // Create comment element
-    function createCommentElement(name, text, time, ownerId, save=true) {
+    onSnapshot(q, (snapshot) => {
+      commentsDisplay.innerHTML = '';
+      
+      if (snapshot.empty) {
+        commentsDisplay.innerHTML = '<p>No comments yet. Be the first to comment!</p>';
+        return;
+      }
+      
+      snapshot.forEach((doc) => {
+        const comment = doc.data();
         const commentEl = document.createElement('div');
-        commentEl.classList.add('single-comment');
-        commentEl.dataset.userId = ownerId;
+        commentEl.className = 'single-comment';
         commentEl.innerHTML = `
-            <h4>${name}</h4>
-            <p>${text}</p>
-            <small>${time}</small>
-            ${ownerId === userId ? '<button class="delete-comment">Delete</button>' : ''}
+          <h4>${escapeHtml(comment.name)}</h4>
+          <p>${escapeHtml(comment.text)}</p>
+          <small>${comment.timestamp ? new Date(comment.timestamp.toDate()).toLocaleString() : 'Recently'}</small>
         `;
-        commentsDisplay.prepend(commentEl);
-    
-        // Add delete functionality only for user's own comments
-        const deleteBtn = commentEl.querySelector('.delete-comment');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-                commentToDelete = commentEl;
-                modal.style.display = 'flex';
-            });
-        }
-    
-        if(save) saveComments();
-    }
-    
-    // Handle form submission
-    commentForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const name = commentForm.commentName.value.trim();
-        const email = commentForm.commentEmail.value.trim();
-        const text = commentForm.commentText.value.trim();
-        
-        if(!name || !email || !text){
-            alert("Please fill all fields.");
-            return;
-        }
-        
-        createCommentElement(name, text, new Date().toLocaleString(), userId);
-        commentForm.reset();
+        commentsDisplay.appendChild(commentEl);
+      });
+    }, (error) => {
+      console.error('Error loading comments:', error);
+      commentsDisplay.innerHTML = '<p>Error loading comments. Please refresh.</p>';
     });
     
-    // Modal buttons
-    if (confirmYes && confirmNo) {
-        confirmYes.addEventListener('click', () => {
-            if(commentToDelete) commentToDelete.remove();
-            saveComments();
-            modal.style.display = 'none';
-            commentToDelete = null;
+    // Submit comment
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = commentForm.commentName.value.trim();
+      const email = commentForm.commentEmail.value.trim();
+      const text = commentForm.commentText.value.trim();
+      
+      if (!name || !email || !text) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      
+      const submitBtn = commentForm.querySelector('button');
+      const originalText = submitBtn.textContent;
+      
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Posting...';
+        
+        // Add comment to Firestore
+        await addDoc(collection(db, "comments"), {
+          name: name,
+          email: email,
+          text: text,
+          timestamp: serverTimestamp()
         });
+        
+        // Clear form
+        commentForm.reset();
+        
+      } catch (error) {
+        console.error('Error posting comment:', error);
+        alert('Error posting comment. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
     
-        confirmNo.addEventListener('click', () => {
-            modal.style.display = 'none';
-            commentToDelete = null;
-        });
+    // Helper function to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
-    
-    // Close modal if clicking outside
-    if (modal) {
-        window.addEventListener('click', e => {
-            if(e.target === modal){
-                modal.style.display = 'none';
-                commentToDelete = null;
-            }
-        });
-    }
-    
-    // Load comments on page load
-    loadComments();
-});
+  });
 </script>
 
 <script src="https://cdn.botpress.cloud/webchat/v3.2/inject.js" defer></script>
