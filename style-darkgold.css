@@ -533,12 +533,12 @@ h3{
 }
 /* ------- blog ------ */
 .blog{
-    width: 80%;
+    width: 90%;
     margin: auto;
     padding: 60px 0;
 }
 .blog-left{
-    flex-basis: 60%;
+    flex-basis: 65%;
 }
 .blog-left img{
     width: 100%;
@@ -559,7 +559,7 @@ h3{
     padding: 0;
 }
 .blog-right{
-    flex-basis: 40%;
+    flex-basis: 32%;
 }
 .blog-right h3{
     background: #D4AF37;
