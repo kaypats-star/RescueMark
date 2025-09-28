@@ -628,28 +628,7 @@ h3{
 .comments-display {
     margin-top: 20px;
 }
-/* Classic Float Layout */
-.blog .row {
-    overflow: hidden; /* Clearfix */
-}
 
-.blog-left {
-    width: 65%;
-    float: left;
-}
-
-.blog-right {
-    width: 32%;
-    float: right;
-}
-
-@media (max-width: 768px) {
-    .blog-left,
-    .blog-right {
-        width: 100%;
-        float: none;
-    }
-}
 .single-comment {
     background: #fff8e1; /* light gold */
     padding: 12px 15px;
