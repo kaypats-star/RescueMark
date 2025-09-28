@@ -628,29 +628,36 @@ h3{
 .comments-display {
     margin-top: 20px;
 }
-/* Fix Blog Layout - Desktop */
-@media (min-width: 768px) {
+/* Force Blog Layout Fix */
+.blog .row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 30px !important;
+}
+
+.blog-left {
+    flex: 1 !important;
+    width: 65% !important;
+    min-width: 0 !important;
+}
+
+.blog-right {
+    flex: 0 0 300px !important;
+    width: 32% !important;
+    position: sticky !important;
+    top: 20px !important;
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
     .blog .row {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 30px;
-        align-items: flex-start;
+        flex-direction: column !important;
     }
     
-    .blog-left {
-        flex: 1;
-        min-width: 0; /* Prevents overflow */
-    }
-    
+    .blog-left,
     .blog-right {
-        flex: 0 0 300px; /* Fixed width for categories */
-        position: sticky;
-        top: 20px; /* Sticks to top when scrolling */
-    }
-    
-    .blog-left img {
-        max-width: 100%;
-        height: auto;
+        width: 100% !important;
+        flex: none !important;
     }
 }
 
