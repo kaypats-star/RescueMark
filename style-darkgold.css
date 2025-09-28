@@ -538,7 +538,7 @@ h3{
     padding: 60px 0;
 }
 .blog-left{
-    flex-basis: 65%;
+    flex-basis: 60%;
 }
 .blog-left img{
     width: 100%;
@@ -559,7 +559,7 @@ h3{
     padding: 0;
 }
 .blog-right{
-    flex-basis: 32%;
+    flex-basis: 40%;
 }
 .blog-right h3{
     background: #D4AF37;
@@ -682,7 +682,7 @@ h3{
 }
 /* Modal background */
 .modal {
-    display: none; /* hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -694,9 +694,8 @@ h3{
     align-items: center;
 }
 
-/* Modal content box */
 .modal-content {
-    background: #fff8e1; /* light gold */
+    background: #fff8e1;
     padding: 25px 30px;
     border-radius: 15px;
     text-align: center;
@@ -705,11 +704,11 @@ h3{
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* Modal buttons */
 .modal-buttons {
     margin-top: 20px;
     display: flex;
     justify-content: space-around;
+    gap: 15px;
 }
 
 .modal-buttons button {
@@ -719,12 +718,12 @@ h3{
     font-weight: 700;
     font-size: 1rem;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .modal-buttons button:hover {
     opacity: 0.85;
 }
-
 /* ------ contact us page---------- */
 .location{
     width: 80%;
