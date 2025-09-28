@@ -123,7 +123,9 @@
 <!-- -----JavaScript ------ -->
 <script src="/script.js"></script>
 
-<!-- Firebase Comments Script -->
+<!-- Add EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -140,7 +142,9 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Simple user ID system
+  // Initialize EmailJS with YOUR credentials
+  emailjs.init("QPhdOZQufzjykyAq8");
+
   function getUserId() {
     let userId = localStorage.getItem('rm_user_id');
     if (!userId) {
@@ -151,7 +155,6 @@
   }
 
   const currentUserId = getUserId();
-  console.log('Current User ID:', currentUserId); // For debugging
 
   document.addEventListener('DOMContentLoaded', function() {
     const commentForm = document.getElementById('commentForm');
@@ -162,7 +165,7 @@
     
     let commentToDelete = null;
 
-    // Load comments
+    // Load comments function
     const loadComments = () => {
       const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
       
@@ -180,6 +183,7 @@
           
           const commentEl = document.createElement('div');
           commentEl.className = 'single-comment';
+          commentEl.id = 'comment-' + doc.id; // Add ID for direct linking
           commentEl.innerHTML = `
             <h4>${escapeHtml(comment.name)}</h4>
             <p>${escapeHtml(comment.text)}</p>
@@ -189,7 +193,6 @@
           
           commentsDisplay.appendChild(commentEl);
 
-          // Add delete handler for my comments
           if (isMyComment) {
             const deleteBtn = commentEl.querySelector('.delete-comment');
             deleteBtn.addEventListener('click', function() {
@@ -198,13 +201,34 @@
             });
           }
         });
+        
+        // Scroll to comment if URL has anchor
+        scrollToComment();
       }, (error) => {
         console.error('Error loading comments:', error);
         commentsDisplay.innerHTML = '<p>Error loading comments. Please refresh.</p>';
       });
     };
 
-    // Submit comment
+    // Smooth scroll to comment when URL has anchor
+    function scrollToComment() {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#comment-')) {
+        const commentElement = document.querySelector(hash);
+        if (commentElement) {
+          setTimeout(() => {
+            commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            commentElement.style.backgroundColor = '#fff8e1';
+            commentElement.style.transition = 'background-color 0.5s ease';
+            setTimeout(() => {
+              commentElement.style.backgroundColor = '';
+            }, 3000);
+          }, 500);
+        }
+      }
+    }
+
+    // Submit comment with email notification
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -224,7 +248,8 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Posting...';
         
-        await addDoc(collection(db, "comments"), {
+        // Add comment to Firestore
+        const docRef = await addDoc(collection(db, "comments"), {
           name: name,
           email: email,
           text: text,
@@ -232,12 +257,36 @@
           timestamp: serverTimestamp()
         });
         
+        const commentId = docRef.id;
+        const commentLink = `${window.location.origin}${window.location.pathname}#comment-${commentId}`;
+        
+        console.log('Comment posted with ID:', commentId);
+        console.log('Comment link:', commentLink);
+        
+        // Send email notification
+        try {
+          await emailjs.send('service_qn9px3t', 'template_pyyfb87', {
+            to_name: name,
+            to_email: email,
+            comment_text: text,
+            comment_link: commentLink,
+            website_name: 'RescueMark Blog',
+            post_title: 'Quick, Tasty & Waste-Free Meals'
+          });
+          
+          console.log('Email sent successfully');
+          
+        } catch (emailError) {
+          console.warn('Email failed to send, but comment was posted:', emailError);
+          // Don't alert user about email failure - comment still worked
+        }
+        
         commentForm.reset();
-        alert('Comment posted successfully!');
+        alert('✅ Comment posted successfully! Check your email for a confirmation with your comment link.');
         
       } catch (error) {
         console.error('Error posting comment:', error);
-        alert('Error posting comment: ' + error.message);
+        alert('❌ Error posting comment: ' + error.message);
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
@@ -252,9 +301,10 @@
           console.log('Comment deleted');
           modal.style.display = 'none';
           commentToDelete = null;
+          alert('Comment deleted successfully!');
         } catch (error) {
           console.error('Delete error:', error);
-          alert('Error deleting comment: ' + error.message);
+          alert('❌ Error deleting comment: ' + error.message);
         }
       }
     });
@@ -264,7 +314,6 @@
       commentToDelete = null;
     });
 
-    // Close modal on background click
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.style.display = 'none';
